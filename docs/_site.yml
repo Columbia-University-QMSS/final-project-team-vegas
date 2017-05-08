@@ -1,6 +1,6 @@
 name: "Group O-Las Vegas Project"
 navbar:
-  title: "My Website"
+  title: "Las Vegas Restaurants"
   left:
     - text: "Home"
       href: index.html
