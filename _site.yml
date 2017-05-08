@@ -14,3 +14,10 @@ navbar:
       href: Map.html
     - text: "Conclusion"
       href: Conclusion.html
+      output:
+  html_document:
+    theme: united
+    highlight: tango
+    include:
+      after_body: footer.html
+    css: styles.css
