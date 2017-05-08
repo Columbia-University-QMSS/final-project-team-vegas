@@ -1,0 +1,16 @@
+name: "Group O-Las Vegas Project"
+navbar:
+  title: "My Website"
+  left:
+    - text: "Home"
+      href: Index.html
+    - text: "Data"
+      href: Data.html
+    - text: "Exploratory Analysis"
+      href: EDA.html
+    - text: "Map"
+      href: Index.html
+    - text: "Map"
+      href: Map.html
+    - text: "Conclusion"
+      href: Conclusion.html
