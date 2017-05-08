@@ -3,13 +3,13 @@ navbar:
   title: "My Website"
   left:
     - text: "Home"
-      href: Index.html
+      href: Home.html
     - text: "Data"
       href: Data.html
     - text: "Exploratory Analysis"
       href: EDA.html
     - text: "Map"
-      href: Index.html
+      href: Home.html
     - text: "Map"
       href: Map.html
     - text: "Conclusion"
