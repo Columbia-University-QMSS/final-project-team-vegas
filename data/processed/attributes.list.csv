@@ -1,0 +1,115 @@
+#,Binary Variables_hc,Category ,Category_keyword,,,,46
+1,Alcohol. none,Alcohol, none,,,,Alcohol
+2,Ambience.romantic,Ambience,romantic,t,f,,Ambience
+3,Ambience.intimate,Ambience,intimate,,,,BikeParking
+4,Ambience.classy,Ambience,classy,,,,BusinessAcceptsCreditCards
+5,Ambience.hipster,Ambience,hipster,,,,BusinessParking
+6,Ambience.divey,Ambience,divey,,,,DriveThru
+7,Ambience.touristy,Ambience,touristy,,,,GoodForKids
+8,Ambience.trendy,Ambience,trendy,,,,GoodForMeal
+9,Ambience.upscale,Ambience,upscale,,,,HasTV
+10,Ambience.casual,Ambience,casual,,,,NoiseLevel
+11,BikeParking,BikeParking,,,,,OutdoorSeating
+12,BusinessAcceptsCreditCards,BusinessAcceptsCreditCards,,,,,RestaurantsAttire
+13,BusinessParking.garage,BusinessParking,garage,,,,RestaurantsPriceRange2
+14,BusinessParking.street,BusinessParking,street,,,,RestaurantsTableService
+15,BusinessParking.validated,BusinessParking,validated,,,,WiFi
+16,BusinessParking.lot,BusinessParking,lot,,,,BYOB
+17,BusinessParking.valet,BusinessParking,valet,,,,BYOBCorkage
+18,DriveThru,DriveThru,,,,,Caters
+19,GoodForKids,GoodForKids,,,,,Corkage
+20,GoodForMeal.dessert,GoodForMeal,dessert,,,,DogsAllowed
+21,GoodForMeal.latenight,GoodForMeal,latenight,,,,RestaurantsCounterService
+22,GoodForMeal.lunch,GoodForMeal,lunch,,,,RestaurantsReservations
+23,GoodForMeal.dinner,GoodForMeal,dinner,,,,BestNights
+24,GoodForMeal.breakfast,GoodForMeal,breakfast,,,,CoatCheck
+25,GoodForMeal.brunch,GoodForMeal,brunch,,,,GoodForDancing
+26,HasTV,HasTV,,,,,HappyHour
+27,NoiseLevel. quiet,NoiseLevel, quiet,,,,Music
+28,OutdoorSeating,OutdoorSeating,,,,,Smoking
+29,RestaurantsAttire. casual,RestaurantsAttire, casual,,,,None
+32,RestaurantsPriceRange2.1,RestaurantsPriceRange2,1,,,,breakfast
+34,RestaurantsTableService,RestaurantsTableService,,,,,RestaurantsDelivery
+36,WiFi. no,WiFi, no,,,,RestaurantsGoodForGroups
+37,Alcohol. full_bar,Alcohol, full_bar,,,,BusinessAcceptsBitcoin
+39,BYOB,BYOB,,,,,ByAppointmentOnly
+40,BYOBCorkage. yes_free,BYOBCorkage, yes_free,,,,RestaurantsTakeOut
+44,Caters,Caters,,,,,background_music
+45,Corkage,Corkage,,,,,DietaryRestrictions
+46,DogsAllowed,DogsAllowed,,,,,WheelchairAccessible
+50,NoiseLevel. average,NoiseLevel, average,,,,classy
+52,RestaurantsCounterService,RestaurantsCounterService,,,,,Open24Hours
+53,RestaurantsPriceRange2.2,RestaurantsPriceRange2,2,,,,halal
+56,WiFi. free,WiFi, free,,,,wednesday
+57,RestaurantsReservations,RestaurantsReservations,,,,,AgesAllowed
+58,BestNights.monday,BestNights,monday,,,,video
+59,BestNights.tuesday,BestNights,tuesday,,,,AcceptsInsurance
+60,BestNights.friday,BestNights,friday,,,,HairSpecializesIn
+61,BestNights.wednesday,BestNights,wednesday,,,,
+62,BestNights.thursday,BestNights,thursday,,,,
+63,BestNights.sunday,BestNights,sunday,,,,
+64,BestNights.saturday,BestNights,saturday,,,,
+65,Caters,Caters,,,,,
+66,CoatCheck,CoatCheck,,,,,
+67,GoodForDancing,GoodForDancing,,,,,
+68,HappyHour,HappyHour,,,,,
+69,Music.dj,Music,dj,,,,
+70,Music.background_music,Music,background_music,,,,
+71,Music.no_music,Music,no_music,,,,
+72,Music.karaoke,Music,karaoke,,,,
+73,Music.live,Music,live,,,,
+74,Music.video,Music,video,,,,
+75,Music.jukebox,Music,jukebox,,,,
+76,NoiseLevel. loud,NoiseLevel, loud,,,,
+77,Smoking. no,Smoking, no,,,,
+80,None.,None,,,,,
+81,breakfast,breakfast,,,,,
+82,BikeParking,BikeParking,,,,,
+83,RestaurantsDelivery,RestaurantsDelivery,,,,,
+84,GoodForKids,GoodForKids,,,,,
+85,RestaurantsGoodForGroups,RestaurantsGoodForGroups,,,,,
+86,BusinessAcceptsBitcoin,BusinessAcceptsBitcoin,,,,,
+87,BYOBCorkage. no,BYOBCorkage, no,,,,
+92,Smoking. outdoor,Smoking, outdoor,,,,
+97,ByAppointmentOnly,ByAppointmentOnly,,,,,
+99,RestaurantsAttire. dressy,RestaurantsAttire, dressy,,,,
+100,Alcohol. beer_and_wine,Alcohol, beer_and_wine,,,,
+103,RestaurantsPriceRange2.3,RestaurantsPriceRange2,3,,,,
+104,RestaurantsTakeOut,RestaurantsTakeOut,,,,,
+107,RestaurantsPriceRange2.4,RestaurantsPriceRange2,4,,,,
+108,NoiseLevel. very_loud,NoiseLevel, very_loud,,,,
+110,background_music,background_music,,,,,
+111,DietaryRestrictions.dairy-free,DietaryRestrictions,dairy-free,,,,
+112,DietaryRestrictions.gluten-free,DietaryRestrictions,gluten-free,,,,
+113,DietaryRestrictions.vegan,DietaryRestrictions,vegan,,,,
+114,DietaryRestrictions.kosher,DietaryRestrictions,kosher,,,,
+115,DietaryRestrictions.halal,DietaryRestrictions,halal,,,,
+116,DietaryRestrictions.soy-free,DietaryRestrictions,soy-free,,,,
+117,DietaryRestrictions.vegetarian,DietaryRestrictions,vegetarian,,,,
+123,Smoking. yes,Smoking, yes,,,,
+124,WheelchairAccessible,WheelchairAccessible,,,,,
+125,classy,classy,,,,,
+126,Open24Hours,Open24Hours,,,,,
+127,halal,halal,,,,,
+132,wednesday,wednesday,,,,,
+135,BusinessAcceptsCreditCards,BusinessAcceptsCreditCards,,,,,
+136,ByAppointmentOnly,ByAppointmentOnly,,,,,
+137,BYOBCorkage. yes_corkage,BYOBCorkage, yes_corkage,,,,
+138,Corkage,Corkage,,,,,
+139,WiFi. paid,WiFi, paid,,,,
+140,BusinessAcceptsBitcoin,BusinessAcceptsBitcoin,,,,,
+143,BYOB,BYOB,,,,,
+146,AgesAllowed. allages,AgesAllowed, allages,,,,
+147,CoatCheck,CoatCheck,,,,,
+148,video,video,,,,,
+149,RestaurantsAttire. formal,RestaurantsAttire, formal,,,,
+151,AgesAllowed. 21plus,AgesAllowed, 21plus,,,,
+154,AcceptsInsurance,AcceptsInsurance,,,,,
+155,HairSpecializesIn.coloring,HairSpecializesIn,coloring,,,,
+156,HairSpecializesIn.africanamerican,HairSpecializesIn,africanamerican,,,,
+157,HairSpecializesIn.curly,HairSpecializesIn,curly,,,,
+158,HairSpecializesIn.perms,HairSpecializesIn,perms,,,,
+159,HairSpecializesIn.kids,HairSpecializesIn,kids,,,,
+160,HairSpecializesIn.extensions,HairSpecializesIn,extensions,,,,
+161,HairSpecializesIn.asian,HairSpecializesIn,asian,,,,
+162,HairSpecializesIn.straightperms,HairSpecializesIn,straightperms,,,,

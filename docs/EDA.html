@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Data Analysis</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/united.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/htmlwidgets-0.8/htmlwidgets.js"></script>
+<link href="site_libs/plotlyjs-1.26.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="site_libs/plotlyjs-1.26.1/plotly-latest.min.js"></script>
+<script src="site_libs/plotly-binding-4.5.6.9000/plotly.js"></script>
+<link href="site_libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
+<script src="site_libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
+<script src="site_libs/typedarray-0.1/typedarray.min.js"></script>
+
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = false;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Las Vegas Restaurants</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="Index.html">Home</a>
+</li>
+<li>
+  <a href="Data.html">Data</a>
+</li>
+<li>
+  <a href="EDA.html">Exploratory Analysis</a>
+</li>
+<li>
+  <a href="Map.html">Map</a>
+</li>
+<li>
+  <a href="Conclusion.html">Conclusion</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Data Analysis</h1>
+
+</div>
+
+
+<div id="restaurants-count-in-las-vegas" class="section level2">
+<h2>Restaurants Count in Las Vegas</h2>
+<p>We draw a plot showing a total count of restaurants by neighborhood level in Las Vegas. As a result, we found the Strip has the most restaurants across all neighborhoods in Las Vegas.</p>
+<ul>
+<li>Downtown: total 340 restaurants</li>
+<li>The Strip: total 818 restaurants</li>
+</ul>
+<p><img src="EDA_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+</div>
+<div id="proportion-of-ratings-by-neighborhood" class="section level2">
+<h2>Proportion of Ratings by Neighborhood</h2>
+<p>We compared the proportion of Restaurants’ star ratings by neighborhood-level in Las Vegas. Star ratings are in scale of 1 to 5 and rated by Yelp Reviewers (i.e., consumers of restaurants).</p>
+<div id="294841269ce" style="width:672px;height:480px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="294841269ce">{"x":{"data":[{"orientation":"v","width":[0.9,0.9,0.9,0.9,0.899999999999999,0.899999999999999,0.899999999999999,0.899999999999999,0.899999999999999,0.899999999999999,0.899999999999999],"base":[0.976878612716763,0.974137931034483,0.973262032085562,0.960681520314548,0.972049689440994,0.970338983050847,0.969465648854962,0.929411764705882,0.981662591687042,0.94047619047619,0.981727574750831],"x":[2,5,6,7,9,10,12,13,15,16,17],"y":[0.023121387283237,0.0258620689655172,0.0267379679144385,0.0393184796854522,0.0279503105590062,0.0296610169491526,0.0305343511450382,0.0705882352941176,0.0183374083129584,0.0595238095238095,0.0182724252491694],"text":["neighborhood: Centennial<br />n: 0.023121387<br />Rating: star1","neighborhood: Eastside<br />n: 0.025862069<br />Rating: star1","neighborhood: Northwest<br />n: 0.026737968<br />Rating: star1","neighborhood: Other<br />n: 0.039318480<br />Rating: star1","neighborhood: Southeast<br />n: 0.027950311<br />Rating: star1","neighborhood: Southwest<br />n: 0.029661017<br />Rating: star1","neighborhood: Summerlin<br />n: 0.030534351<br />Rating: star1","neighborhood: Sunrise<br />n: 0.070588235<br />Rating: star1","neighborhood: The Strip<br />n: 0.018337408<br />Rating: star1","neighborhood: University<br />n: 0.059523810<br />Rating: star1","neighborhood: Westside<br />n: 0.018272425<br />Rating: star1"],"type":"bar","marker":{"autocolorscale":false,"color":"rgba(248,118,109,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"star1","legendgroup":"star1","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":[0.9,0.9,0.9,0.9,0.9,0.9,0.899999999999999,0.899999999999999,0.899999999999999,0.899999999999999,0.899999999999999,0.899999999999999,0.899999999999999,0.899999999999999],"base":[0.780346820809249,0.91864406779661,0.884272997032641,0.790948275862069,0.711229946524064,0.785058977719528,0.767080745341615,0.783898305084746,0.888361045130641,0.83969465648855,0.735294117647059,0.792176039119804,0.80952380952381,0.857142857142857],"x":[2,3,4,5,6,7,9,10,11,12,13,15,16,17],"y":[0.196531791907514,0.0813559322033899,0.115727002967359,0.183189655172414,0.262032085561497,0.17562254259502,0.204968944099379,0.186440677966102,0.111638954869359,0.129770992366412,0.194117647058824,0.189486552567237,0.130952380952381,0.124584717607974],"text":["neighborhood: Centennial<br />n: 0.196531792<br />Rating: star2","neighborhood: Chinatown<br />n: 0.081355932<br />Rating: star2","neighborhood: Downtown<br />n: 0.115727003<br />Rating: star2","neighborhood: Eastside<br />n: 0.183189655<br />Rating: star2","neighborhood: Northwest<br />n: 0.262032086<br />Rating: star2","neighborhood: Other<br />n: 0.175622543<br />Rating: star2","neighborhood: Southeast<br />n: 0.204968944<br />Rating: star2","neighborhood: Southwest<br />n: 0.186440678<br />Rating: star2","neighborhood: Spring Valley<br />n: 0.111638955<br />Rating: star2","neighborhood: Summerlin<br />n: 0.129770992<br />Rating: star2","neighborhood: Sunrise<br />n: 0.194117647<br />Rating: star2","neighborhood: The Strip<br />n: 0.189486553<br />Rating: star2","neighborhood: University<br />n: 0.130952381<br />Rating: star2","neighborhood: Westside<br />n: 0.124584718<br />Rating: star2"],"type":"bar","marker":{"autocolorscale":false,"color":"rgba(163,165,0,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"star2","legendgroup":"star2","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":[0.9,0.9,0.9,0.9,0.9,0.9,0.9,0.899999999999999,0.899999999999999,0.899999999999999,0.899999999999999,0.899999999999999,0.899999999999999,0.899999999999999,0.899999999999999,0.899999999999999,0.899999999999999],"base":[0.25,0.312138728323699,0.464406779661017,0.519287833827893,0.428879310344828,0.262032085561497,0.36173001310616,0.027027027027027,0.377329192546584,0.351694915254237,0.475059382422803,0.389312977099237,0.382352941176471,0.538461538461538,0.293398533007335,0.380952380952381,0.471760797342193],"x":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17],"y":[0.75,0.468208092485549,0.454237288135593,0.364985163204748,0.362068965517241,0.449197860962567,0.423328964613368,0.972972972972973,0.389751552795031,0.432203389830508,0.413301662707838,0.450381679389313,0.352941176470588,0.461538461538462,0.498777506112469,0.428571428571429,0.385382059800664],"text":["neighborhood: Anthem<br />n: 0.750000000<br />Rating: star3","neighborhood: Centennial<br />n: 0.468208092<br />Rating: star3","neighborhood: Chinatown<br />n: 0.454237288<br />Rating: star3","neighborhood: Downtown<br />n: 0.364985163<br />Rating: star3","neighborhood: Eastside<br />n: 0.362068966<br />Rating: star3","neighborhood: Northwest<br />n: 0.449197861<br />Rating: star3","neighborhood: Other<br />n: 0.423328965<br />Rating: star3","neighborhood: South Summerlin<br />n: 0.972972973<br />Rating: star3","neighborhood: Southeast<br />n: 0.389751553<br />Rating: star3","neighborhood: Southwest<br />n: 0.432203390<br />Rating: star3","neighborhood: Spring Valley<br />n: 0.413301663<br />Rating: star3","neighborhood: Summerlin<br />n: 0.450381679<br />Rating: star3","neighborhood: Sunrise<br />n: 0.352941176<br />Rating: star3","neighborhood: The Lakes<br />n: 0.461538462<br />Rating: star3","neighborhood: The Strip<br />n: 0.498777506<br />Rating: star3","neighborhood: University<br />n: 0.428571429<br />Rating: star3","neighborhood: Westside<br />n: 0.385382060<br />Rating: star3"],"type":"bar","marker":{"autocolorscale":false,"color":"rgba(0,191,125,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"star3","legendgroup":"star3","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":[0.9,0.9,0.9,0.9,0.9,0.9,0.9,0.899999999999999,0.899999999999999,0.899999999999999,0.899999999999999,0.899999999999999,0.899999999999999,0.899999999999999,0.899999999999999,0.899999999999999],"base":[0,0.0173410404624277,0.0271186440677966,0.0474777448071217,0.0301724137931034,0.0213903743315508,0.0288335517693316,0.0357142857142857,0.0169491525423729,0.0332541567695962,0.0229007633587786,0.0117647058823529,0,0.00733496332518337,0.0119047619047619,0.0415282392026578],"x":[1,2,3,4,5,6,7,9,10,11,12,13,14,15,16,17],"y":[0.25,0.294797687861272,0.43728813559322,0.471810089020772,0.398706896551724,0.240641711229947,0.332896461336828,0.341614906832298,0.334745762711864,0.441805225653207,0.366412213740458,0.370588235294118,0.538461538461538,0.286063569682152,0.369047619047619,0.430232558139535],"text":["neighborhood: Anthem<br />n: 0.250000000<br />Rating: star4","neighborhood: Centennial<br />n: 0.294797688<br />Rating: star4","neighborhood: Chinatown<br />n: 0.437288136<br />Rating: star4","neighborhood: Downtown<br />n: 0.471810089<br />Rating: star4","neighborhood: Eastside<br />n: 0.398706897<br />Rating: star4","neighborhood: Northwest<br />n: 0.240641711<br />Rating: star4","neighborhood: Other<br />n: 0.332896461<br />Rating: star4","neighborhood: Southeast<br />n: 0.341614907<br />Rating: star4","neighborhood: Southwest<br />n: 0.334745763<br />Rating: star4","neighborhood: Spring Valley<br />n: 0.441805226<br />Rating: star4","neighborhood: Summerlin<br />n: 0.366412214<br />Rating: star4","neighborhood: Sunrise<br />n: 0.370588235<br />Rating: star4","neighborhood: The Lakes<br />n: 0.538461538<br />Rating: star4","neighborhood: The Strip<br />n: 0.286063570<br />Rating: star4","neighborhood: University<br />n: 0.369047619<br />Rating: star4","neighborhood: Westside<br />n: 0.430232558<br />Rating: star4"],"type":"bar","marker":{"autocolorscale":false,"color":"rgba(0,176,246,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"star4","legendgroup":"star4","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":[0.9,0.9,0.9,0.9,0.9,0.9,0.899999999999999,0.899999999999999,0.899999999999999,0.899999999999999,0.899999999999999,0.899999999999999,0.899999999999999,0.899999999999999,0.899999999999999],"base":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"x":[2,3,4,5,6,7,8,9,10,11,12,13,15,16,17],"y":[0.0173410404624277,0.0271186440677966,0.0474777448071217,0.0301724137931034,0.0213903743315508,0.0288335517693316,0.027027027027027,0.0357142857142857,0.0169491525423729,0.0332541567695962,0.0229007633587786,0.0117647058823529,0.00733496332518337,0.0119047619047619,0.0415282392026578],"text":["neighborhood: Centennial<br />n: 0.017341040<br />Rating: star5","neighborhood: Chinatown<br />n: 0.027118644<br />Rating: star5","neighborhood: Downtown<br />n: 0.047477745<br />Rating: star5","neighborhood: Eastside<br />n: 0.030172414<br />Rating: star5","neighborhood: Northwest<br />n: 0.021390374<br />Rating: star5","neighborhood: Other<br />n: 0.028833552<br />Rating: star5","neighborhood: South Summerlin<br />n: 0.027027027<br />Rating: star5","neighborhood: Southeast<br />n: 0.035714286<br />Rating: star5","neighborhood: Southwest<br />n: 0.016949153<br />Rating: star5","neighborhood: Spring Valley<br />n: 0.033254157<br />Rating: star5","neighborhood: Summerlin<br />n: 0.022900763<br />Rating: star5","neighborhood: Sunrise<br />n: 0.011764706<br />Rating: star5","neighborhood: The Strip<br />n: 0.007334963<br />Rating: star5","neighborhood: University<br />n: 0.011904762<br />Rating: star5","neighborhood: Westside<br />n: 0.041528239<br />Rating: star5"],"type":"bar","marker":{"autocolorscale":false,"color":"rgba(231,107,243,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"star5","legendgroup":"star5","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":43.2754946727549,"r":7.30593607305936,"b":86.0850961262629,"l":48.9497716894977},"font":{"color":"rgba(0,0,0,1)","family":"serif","size":14.6118721461187},"title":"Distribution of Restaurants Ratings per Neighborhood in Las Vegas","titlefont":{"color":"rgba(0,0,0,1)","family":"serif","size":17.5342465753425},"xaxis":{"domain":[0,1],"type":"linear","autorange":false,"range":[0.4,17.6],"tickmode":"array","ticktext":["Anthem","Centennial","Chinatown","Downtown","Eastside","Northwest","Other","South Summerlin","Southeast","Southwest","Spring Valley","Summerlin","Sunrise","The Lakes","The Strip","University","Westside"],"tickvals":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17],"categoryorder":"array","categoryarray":["Anthem","Centennial","Chinatown","Downtown","Eastside","Northwest","Other","South Summerlin","Southeast","Southwest","Spring Valley","Summerlin","Sunrise","The Lakes","The Strip","University","Westside"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(51,51,51,1)","family":"serif","size":14.6118721461187},"tickangle":-45,"showline":false,"linecolor":null,"linewidth":0,"showgrid":false,"gridcolor":null,"gridwidth":0,"zeroline":false,"anchor":"y","title":"Neighborhood","titlefont":{"color":"rgba(0,0,0,1)","family":"serif","size":14.6118721461187},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"type":"linear","autorange":false,"range":[-0.05,1.05],"tickmode":"array","ticktext":["0.00","0.25","0.50","0.75","1.00"],"tickvals":[0,0.25,0.5,0.75,1],"categoryorder":"array","categoryarray":["0.00","0.25","0.50","0.75","1.00"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"serif","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":false,"gridcolor":null,"gridwidth":0,"zeroline":false,"anchor":"x","title":"Proportion","titlefont":{"color":"rgba(0,0,0,1)","family":"serif","size":14.6118721461187},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":true,"legend":{"bgcolor":null,"bordercolor":null,"borderwidth":0,"font":{"color":"rgba(0,0,0,1)","family":"serif","size":11.689497716895},"y":0.93503937007874},"annotations":[{"text":"Rating","x":1.02,"y":1,"showarrow":false,"ax":0,"ay":0,"font":{"color":"rgba(0,0,0,1)","family":"serif","size":14.6118721461187},"xref":"paper","yref":"paper","textangle":-0,"xanchor":"left","yanchor":"bottom","legendTitle":true}],"hovermode":"closest","barmode":"relative","dragmode":"zoom"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":[{"name":"Collaborate","icon":{"width":1000,"ascent":500,"descent":-50,"path":"M487 375c7-10 9-23 5-36l-79-259c-3-12-11-23-22-31-11-8-22-12-35-12l-263 0c-15 0-29 5-43 15-13 10-23 23-28 37-5 13-5 25-1 37 0 0 0 3 1 7 1 5 1 8 1 11 0 2 0 4-1 6 0 3-1 5-1 6 1 2 2 4 3 6 1 2 2 4 4 6 2 3 4 5 5 7 5 7 9 16 13 26 4 10 7 19 9 26 0 2 0 5 0 9-1 4-1 6 0 8 0 2 2 5 4 8 3 3 5 5 5 7 4 6 8 15 12 26 4 11 7 19 7 26 1 1 0 4 0 9-1 4-1 7 0 8 1 2 3 5 6 8 4 4 6 6 6 7 4 5 8 13 13 24 4 11 7 20 7 28 1 1 0 4 0 7-1 3-1 6-1 7 0 2 1 4 3 6 1 1 3 4 5 6 2 3 3 5 5 6 1 2 3 5 4 9 2 3 3 7 5 10 1 3 2 6 4 10 2 4 4 7 6 9 2 3 4 5 7 7 3 2 7 3 11 3 3 0 8 0 13-1l0-1c7 2 12 2 14 2l218 0c14 0 25-5 32-16 8-10 10-23 6-37l-79-259c-7-22-13-37-20-43-7-7-19-10-37-10l-248 0c-5 0-9-2-11-5-2-3-2-7 0-12 4-13 18-20 41-20l264 0c5 0 10 2 16 5 5 3 8 6 10 11l85 282c2 5 2 10 2 17 7-3 13-7 17-13z m-304 0c-1-3-1-5 0-7 1-1 3-2 6-2l174 0c2 0 4 1 7 2 2 2 4 4 5 7l6 18c0 3 0 5-1 7-1 1-3 2-6 2l-173 0c-3 0-5-1-8-2-2-2-4-4-4-7z m-24-73c-1-3-1-5 0-7 2-2 3-2 6-2l174 0c2 0 5 0 7 2 3 2 4 4 5 7l6 18c1 2 0 5-1 6-1 2-3 3-5 3l-174 0c-3 0-5-1-7-3-3-1-4-4-5-6z"},"click":"function(gd) { \n        // is this being viewed in RStudio?\n        if (location.search == '?viewer_pane=1') {\n          alert('To learn about plotly for collaboration, visit:\\n https://cpsievert.github.io/plotly_book/plot-ly-for-collaboration.html');\n        } else {\n          window.open('https://cpsievert.github.io/plotly_book/plot-ly-for-collaboration.html', '_blank');\n        }\n      }"}],"cloud":false},"source":"A","attrs":{"2948542e75c8":{"x":{},"y":{},"fill":{},"type":"bar"}},"cur_data":"2948542e75c8","visdat":{"2948542e75c8":["function (y) ","x"]},"highlight":{"on":"plotly_selected","off":"plotly_relayout","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"ctGroups":[]},"base_url":"https://plot.ly"},"evals":["config.modeBarButtonsToAdd.0.click"],"jsHooks":{"render":[{"code":"function(el, x) { var ctConfig = crosstalk.var('plotlyCrosstalkOpts').set({\"on\":\"plotly_selected\",\"off\":\"plotly_relayout\",\"persistent\":false,\"dynamic\":false,\"selectize\":false,\"opacityDim\":0.2,\"selected\":{\"opacity\":1}}); }","data":null}]}}</script>
+<div id="294881d2de0" style="width:672px;height:480px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="294881d2de0">{"x":{"data":[{"orientation":"v","width":0.9,"base":0.981662591687042,"x":[2],"y":[0.0183374083129584],"text":"neighborhood: The Strip<br />n: 0.018337408<br />star: star1","type":"bar","marker":{"autocolorscale":false,"color":"rgba(248,118,109,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"star1","legendgroup":"star1","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":[0.9,0.9],"base":[0.884272997032641,0.792176039119804],"x":[1,2],"y":[0.115727002967359,0.189486552567237],"text":["neighborhood: Downtown<br />n: 0.115727003<br />star: star2","neighborhood: The Strip<br />n: 0.189486553<br />star: star2"],"type":"bar","marker":{"autocolorscale":false,"color":"rgba(163,165,0,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"star2","legendgroup":"star2","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":[0.9,0.9],"base":[0.519287833827893,0.293398533007335],"x":[1,2],"y":[0.364985163204748,0.498777506112469],"text":["neighborhood: Downtown<br />n: 0.364985163<br />star: star3","neighborhood: The Strip<br />n: 0.498777506<br />star: star3"],"type":"bar","marker":{"autocolorscale":false,"color":"rgba(0,191,125,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"star3","legendgroup":"star3","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":[0.9,0.9],"base":[0.0474777448071217,0.00733496332518337],"x":[1,2],"y":[0.471810089020772,0.286063569682152],"text":["neighborhood: Downtown<br />n: 0.471810089<br />star: star4","neighborhood: The Strip<br />n: 0.286063570<br />star: star4"],"type":"bar","marker":{"autocolorscale":false,"color":"rgba(0,176,246,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"star4","legendgroup":"star4","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":[0.9,0.9],"base":[0,0],"x":[1,2],"y":[0.0474777448071217,0.00733496332518337],"text":["neighborhood: Downtown<br />n: 0.047477745<br />star: star5","neighborhood: The Strip<br />n: 0.007334963<br />star: star5"],"type":"bar","marker":{"autocolorscale":false,"color":"rgba(231,107,243,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"star5","legendgroup":"star5","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1],"y":[0.5],"text":"Avg. Star=3.65","textfont":{"size":15.1181102362205,"color":"rgba(139,0,0,1)"},"type":"scatter","mode":"text","hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[2],"y":[0.5],"text":"Avg. Star=3.32","textfont":{"size":15.1181102362205,"color":"rgba(139,0,0,1)"},"type":"scatter","mode":"text","hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":43.2754946727549,"r":7.30593607305936,"b":63.390412884982,"l":48.9497716894977},"font":{"color":"rgba(0,0,0,1)","family":"serif","size":14.6118721461187},"title":"Distribution of Restaurants Ratings in DTLV & the Strip","titlefont":{"color":"rgba(0,0,0,1)","family":"serif","size":17.5342465753425},"xaxis":{"domain":[0,1],"type":"linear","autorange":false,"range":[0.4,2.6],"tickmode":"array","ticktext":["Downtown","The Strip"],"tickvals":[1,2],"categoryorder":"array","categoryarray":["Downtown","The Strip"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(51,51,51,1)","family":"serif","size":14.6118721461187},"tickangle":-45,"showline":false,"linecolor":null,"linewidth":0,"showgrid":false,"gridcolor":null,"gridwidth":0,"zeroline":false,"anchor":"y","title":"Neighborhood","titlefont":{"color":"rgba(0,0,0,1)","family":"serif","size":14.6118721461187},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"type":"linear","autorange":false,"range":[-0.05,1.05],"tickmode":"array","ticktext":["0.00","0.25","0.50","0.75","1.00"],"tickvals":[0,0.25,0.5,0.75,1],"categoryorder":"array","categoryarray":["0.00","0.25","0.50","0.75","1.00"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"serif","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":false,"gridcolor":null,"gridwidth":0,"zeroline":false,"anchor":"x","title":"Proportion","titlefont":{"color":"rgba(0,0,0,1)","family":"serif","size":14.6118721461187},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":true,"legend":{"bgcolor":null,"bordercolor":null,"borderwidth":0,"font":{"color":"rgba(0,0,0,1)","family":"serif","size":11.689497716895},"y":0.93503937007874},"annotations":[{"text":"star","x":1.02,"y":1,"showarrow":false,"ax":0,"ay":0,"font":{"color":"rgba(0,0,0,1)","family":"serif","size":14.6118721461187},"xref":"paper","yref":"paper","textangle":-0,"xanchor":"left","yanchor":"bottom","legendTitle":true}],"hovermode":"closest","barmode":"relative","dragmode":"zoom"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":[{"name":"Collaborate","icon":{"width":1000,"ascent":500,"descent":-50,"path":"M487 375c7-10 9-23 5-36l-79-259c-3-12-11-23-22-31-11-8-22-12-35-12l-263 0c-15 0-29 5-43 15-13 10-23 23-28 37-5 13-5 25-1 37 0 0 0 3 1 7 1 5 1 8 1 11 0 2 0 4-1 6 0 3-1 5-1 6 1 2 2 4 3 6 1 2 2 4 4 6 2 3 4 5 5 7 5 7 9 16 13 26 4 10 7 19 9 26 0 2 0 5 0 9-1 4-1 6 0 8 0 2 2 5 4 8 3 3 5 5 5 7 4 6 8 15 12 26 4 11 7 19 7 26 1 1 0 4 0 9-1 4-1 7 0 8 1 2 3 5 6 8 4 4 6 6 6 7 4 5 8 13 13 24 4 11 7 20 7 28 1 1 0 4 0 7-1 3-1 6-1 7 0 2 1 4 3 6 1 1 3 4 5 6 2 3 3 5 5 6 1 2 3 5 4 9 2 3 3 7 5 10 1 3 2 6 4 10 2 4 4 7 6 9 2 3 4 5 7 7 3 2 7 3 11 3 3 0 8 0 13-1l0-1c7 2 12 2 14 2l218 0c14 0 25-5 32-16 8-10 10-23 6-37l-79-259c-7-22-13-37-20-43-7-7-19-10-37-10l-248 0c-5 0-9-2-11-5-2-3-2-7 0-12 4-13 18-20 41-20l264 0c5 0 10 2 16 5 5 3 8 6 10 11l85 282c2 5 2 10 2 17 7-3 13-7 17-13z m-304 0c-1-3-1-5 0-7 1-1 3-2 6-2l174 0c2 0 4 1 7 2 2 2 4 4 5 7l6 18c0 3 0 5-1 7-1 1-3 2-6 2l-173 0c-3 0-5-1-8-2-2-2-4-4-4-7z m-24-73c-1-3-1-5 0-7 2-2 3-2 6-2l174 0c2 0 5 0 7 2 3 2 4 4 5 7l6 18c1 2 0 5-1 6-1 2-3 3-5 3l-174 0c-3 0-5-1-7-3-3-1-4-4-5-6z"},"click":"function(gd) { \n        // is this being viewed in RStudio?\n        if (location.search == '?viewer_pane=1') {\n          alert('To learn about plotly for collaboration, visit:\\n https://cpsievert.github.io/plotly_book/plot-ly-for-collaboration.html');\n        } else {\n          window.open('https://cpsievert.github.io/plotly_book/plot-ly-for-collaboration.html', '_blank');\n        }\n      }"}],"cloud":false},"source":"A","attrs":{"29484e072111":{"x":{},"y":{},"fill":{},"type":"bar"},"29485dbc8ff":{"x":{},"y":{}},"29487b512d07":{"x":{},"y":{}}},"cur_data":"29484e072111","visdat":{"29484e072111":["function (y) ","x"],"29485dbc8ff":["function (y) ","x"],"29487b512d07":["function (y) ","x"]},"highlight":{"on":"plotly_selected","off":"plotly_relayout","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"ctGroups":[]},"base_url":"https://plot.ly"},"evals":["config.modeBarButtonsToAdd.0.click"],"jsHooks":{"render":[{"code":"function(el, x) { var ctConfig = crosstalk.var('plotlyCrosstalkOpts').set({\"on\":\"plotly_selected\",\"off\":\"plotly_relayout\",\"persistent\":false,\"dynamic\":false,\"selectize\":false,\"opacityDim\":0.2,\"selected\":{\"opacity\":1}}); }","data":null}]}}</script>
+<p>Restaurant rating proportion is varied by each neighborhood in Las Vegas. However, proportion of restaurant ratings in two selected neighborhoods, The Strip and Downtown are somewhat similar. Downtown has average restaurant rate of 3.65 out of 5.00; The Strip has average restaurant rate of 3.32 out of 5.00. Also, Downtown has a higher proportion for restaurants rated as star 4 or above, comparing to the Strip, which mainly comprises of star 3-rated restaurants.</p>
+</div>
+<div id="review-counts-per-neighborhood" class="section level2">
+<h2>Review Counts per Neighborhood</h2>
+<p><img src="https://github.com/Columbia-University-QMSS/final-project-team-vegas/blob/master/plot/Rplot01.png?raw=true"> <br> <br></p>
+<p><img src="https://github.com/Columbia-University-QMSS/final-project-team-vegas/blob/master/plot/Rplot02.png?raw=true"></p>
+</div>
+<div id="attribute-analysis" class="section level2">
+<h2>Attribute Analysis</h2>
+<p>I selected alcohol selling option and ambiance as two main attributes to analyze their impacts on Restaurant Proportion/Rating in Old and New Las Vegas.</p>
+<div id="impacts-of-alcohol-attribute" class="section level3">
+<h3>Impacts of Alcohol Attribute</h3>
+<p><img src="https://github.com/Columbia-University-QMSS/final-project-team-vegas/blob/master/plot/att_alcohol_dt.PNG?raw=true">&quot;</p>
+<p><img src="https://github.com/Columbia-University-QMSS/final-project-team-vegas/blob/master/plot/att_alcohol_strp.PNG?raw=true">&quot;</p>
+<ul>
+<li>The Strip region’s restaurants are high-rated if they sell alcohol drinks.</li>
+<li>Downtown restaurants slightly follow this trend, too, but boozy option is more popular in the Strip.</li>
+</ul>
+</div>
+<div id="impacts-of-ambiance-attribute" class="section level3">
+<h3>Impacts of Ambiance Attribute</h3>
+<p><img src="https://github.com/Columbia-University-QMSS/final-project-team-vegas/blob/master/plot/att_ambiance_dt.PNG?raw=true"></p>
+<p><img src="https://github.com/Columbia-University-QMSS/final-project-team-vegas/blob/master/plot/att_ambiance_strp.PNG?raw=true"></p>
+<ul>
+<li>Overall similar trend of ratings per ambiance, but restaurant customers in the Strip prefers “Classy” and “Upscale” restaurants a bit more.</li>
+<li>Also, restaurants in the Strip are categorized with more diversified ambiance attributes.</li>
+</ul>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
