@@ -13,3 +13,8 @@ Veronica Lee, Eileen (Yei Rim) Suh
 - Unzip Yelp dataset and put .json files into data/raw folder
 - Run src/data/process_raw_data.py
 - We post a final subset of data in this final submission repo 
+
+### Published website can be viewed at following Github page: 
+
+Currently we have some technical difficulties seeing the website under this repo that we are building the published github web page fully present our data visualization and analysis. Update on this website is in progress and will be completed promptly. Until then, please use belo github webpage: 
+https://vl2354.github.io/test/
