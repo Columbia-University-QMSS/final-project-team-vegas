@@ -1,0 +1,243 @@
+---
+title: "Data Analysis"
+output:
+ html_document:
+    theme: united
+    highlight: tango
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r include = FALSE, echo=FALSE}
+
+library(tidyverse)
+library(stringr)
+library(ggplot2)
+library(ggthemes)
+library(readr)
+library(plotly)
+library(dplyr)
+
+# Importing the data
+setwd("C:/Users/Veronica/Documents/GitHub/QMSS_G4063_final_project_Veronica_Eileen/QMSS_G4063_final_project_Veronica_Eileen/QMSS_G4063_final_project_Veronica_Eileen")
+
+restaurants <- read.csv("./data/lv_business_categories_matrix_v2.csv") 
+
+```
+
+
+## Restaurants Count in Las Vegas
+
+We draw a plot showing a total count of restaurants by neighborhood level in Las Vegas. 
+As a result, we found the Strip has the most restaurants across all neighborhoods in Las Vegas. 
+
+- Downtown: total 340 restaurants 
+- The Strip: total 818 restaurants 
+
+```{r echo = FALSE}
+restaurants_count <- restaurants %>%
+  group_by(neighborhood) %>% 
+  summarise(
+    n = n()) %>%
+  arrange(neighborhood)
+
+# Updated to Export Restaurant
+#str(restaurants_count)
+
+
+# selected seven restaurants 
+s_restaurants_count <- restaurants %>%
+  group_by(neighborhood) %>% 
+  summarise(
+    n = n()
+  ) %>%
+  filter(neighborhood %in% c("The Strip", "Downtown"))
+
+
+n1 <- unlist(unique(restaurants_count[, "neighborhood"]))
+ 
+
+# original graph 
+original <- ggplot(restaurants_count, aes(x = reorder(neighborhood, n), y = n)) + 
+  geom_col(width = 0.7, fill = "#c41200") + 
+  labs(x = "Neighborhood", y = "Number of Restaurants") + 
+  theme_tufte() + 
+  ggtitle("Restaurants per Neighborhood in Las Vegas") + 
+  coord_flip() + 
+  geom_text(aes(label = n), vjust = 0)
+
+# Create a new "selected" Column, marks the Strip and DTLV in dummy variables (selected =1, not selected =0)
+restaurants_count$selected <- ifelse(grepl("The Strip|Downtown",restaurants_count$neighborhood),1, 0)
+
+# updated graph, highlighting selected cities in different colors, and show counts of restaurants per all cities
+ggplot(restaurants_count, aes(x = reorder(neighborhood, n), y = n, fill = as.factor(selected))) + 
+  geom_col(width = 0.7) + 
+  labs(x = "Neighborhood", y = "Number of Restaurants") + 
+  theme_tufte() + 
+  ggtitle("Restaurants per Neighborhood in Las Vegas") + 
+  coord_flip() + 
+  geom_text(aes(label = n), vjust = 0) + theme(legend.position = "None")
+
+```
+
+
+## Proportion of Ratings by Neighborhood 
+
+We compared the proportion of Restaurants' star ratings by neighborhood-level in Las Vegas. Star ratings are in scale of 1 to 5 and rated by Yelp Reviewers (i.e., consumers of restaurants).  
+
+```{r include=FALSE,echo=FALSE}
+
+restaurants_rating <- restaurants %>%
+  group_by(neighborhood, stars) %>%
+#  filter(neighborhood %in% c("The Strip", "Downtown")) %>%
+  summarise(
+    n = n()
+  ) %>%
+  spread(key = stars, value = n) %>%
+  mutate(
+    star1 = `1` + `1.5`,
+    star2 = `2` + `2.5`,
+    star3 = `3` + `3.5`,
+    star4 = `4` + `4.5`,
+    star5 = `5`
+  ) %>%
+  select(neighborhood, star1, star2, star3, star4, star5) %>%
+  gather(star1, star2, star3, star4, star5, key = "star", value = "n")
+
+# Omitting neighborhoods with misisng variables 
+restaurants_rating <- restaurants_rating %>% na.omit()
+
+s_restaurants_rating <- restaurants_rating %>%
+  group_by(neighborhood) %>% 
+  filter(neighborhood %in% c("The Strip", "Downtown"))
+
+s_restaurants_rating <- s_restaurants_rating %>% na.omit()
+
+
+# Renaming the columns to better account for values asked by an assignment Part 2 question 
+restaurants_rating <- restaurants_rating %>% rename(Rating=star)
+```
+
+```{r include=FALSE, echo=FALSE}
+library(plotly)
+# distribution of restaurant ratings per neighborhood 
+g1 <- ggplot(restaurants_rating) + 
+  geom_bar(aes(x = neighborhood, y = n, fill = Rating), stat = "identity", position = "fill") + 
+  theme_tufte() + 
+  theme(axis.text.x = element_text(colour = "grey20", size = 11, angle = 45, hjust = 1, 
+                                   vjust = 1, face = "italic")) + 
+  ggtitle("Distribution of Restaurants Ratings per Neighborhood in Las Vegas") + 
+  labs(x = "Neighborhood", y = "Proportion") 
+```
+
+```{r echo=FALSE}
+ggplotly(g1)
+```
+
+```{r include = FALSE, echo = FALSE}
+# distribution of restaurant ratings in DTLV and the Strip
+
+g2 <- ggplot(s_restaurants_rating) + 
+  geom_bar(aes(x = neighborhood, y = n, fill = star), stat = "identity", position = "fill") + 
+  annotate("text", x = 'Downtown', y =  0.50, label = "Avg. Star=3.65", family="serif", fontface="italic", colour="darkred", size=4)+
+  annotate("text", x = 'The Strip', y =  0.50, label = "Avg. Star=3.32", family="serif", fontface="italic", colour="darkred", size=4)+
+  theme_tufte() + 
+  theme(axis.text.x = element_text(colour = "grey20", size = 11, angle = 45, hjust = 1, 
+                                   vjust = 1, face = "italic")) + 
+  ggtitle("Distribution of Restaurants Ratings in DTLV & the Strip") + 
+  labs(x = "Neighborhood", y = "Proportion") 
+```
+
+```{r echo = FALSE}
+ggplotly(g2)
+
+```
+
+Restaurant rating proportion is varied by each neighborhood in Las Vegas. However, proportion of restaurant ratings in two selected neighborhoods, The Strip and Downtown are somewhat similar. Downtown has average restaurant rate of 3.65 out of 5.00; The Strip has average restaurant rate of 3.32 out of 5.00. Also, Downtown has a higher proportion for restaurants rated as star 4 or above, comparing to the Strip, which mainly comprises of star 3-rated restaurants. 
+
+## Review Counts per Neighborhood
+
+```{r include=FALSE,echo = FALSE}
+
+restaurants_review_bp <- restaurants %>%
+  select(neighborhood, review_count) %>%
+  group_by(neighborhood) %>%
+  filter(neighborhood %in% n1) %>% arrange(neighborhood)
+
+s_restaurants_review_bp <- restaurants %>%
+  select(neighborhood, review_count) %>%
+  group_by(neighborhood) %>%
+  filter(neighborhood %in% c('The Strip','Downtown')) %>% arrange(neighborhood)
+
+
+```
+
+```{r include=FALSE, echo = FALSE}
+#Review count of restaurants in each neighborhood in LV
+summary_r1 <- restaurants_review_bp %>% group_by(neighborhood) %>% summarise(mean = mean(review_count), max= 
+max(review_count),min=min(review_count),median = median(review_count))
+
+r <- ggplot(restaurants_review_bp, aes(x = reorder(neighborhood, as.numeric(review_count), FUN = median), 
+                                  y = as.numeric(review_count))) + 
+  geom_boxplot(alpha = 0.3) + 
+  coord_flip() + 
+  scale_y_continuous(breaks= seq(0,300,20), limits = c(0,300)) +
+ # ylim(0,300)+
+  ggtitle("Review Count of Restaurants in each Neighborhood in LV") + 
+  labs(x = "Neighborhood", y ="Review Count") + 
+  theme_tufte()
+```
+
+<img src="https://github.com/Columbia-University-QMSS/final-project-team-vegas/blob/master/plot/Rplot01.png?raw=true">
+<br> 
+<br>
+```{r include-FALSE, echo = FALSE}
+#Review count of restaurants in DTLV & the Strip
+s_restaurants_review_bp$review_count <- as.numeric(s_restaurants_review_bp$review_count)
+summary_r2 <- s_restaurants_review_bp %>% group_by(neighborhood) %>% summarise(mean = mean(review_count), max= max(review_count),min=min(review_count),median = median(review_count))
+
+r2<- ggplot(s_restaurants_review_bp, aes(x = reorder(neighborhood, as.numeric(review_count), FUN = median), 
+                                    y = as.numeric(review_count))) + 
+  geom_boxplot(alpha = 0.3) + 
+  coord_flip() + 
+  scale_y_continuous(limits = c(0,500), breaks = seq(0,500,25))+
+theme_tufte() +
+  ggtitle("Review Count of Restaurants in Downtown & the Strip in LV") + 
+  labs(x = "Neighborhood", y ="Review Count")
+
+r2 <- r2 + annotate("text", x = 'Downtown', y =  100, label = "mean=130,median=32", family="serif", fontface="italic", colour="darkred", size=3)+
+  annotate("text", x = 'The Strip', y =  100, label = "mean=332, median=103", family="serif", fontface="italic", colour="darkred", size=3)
+
+```
+
+<img src="https://github.com/Columbia-University-QMSS/final-project-team-vegas/blob/master/plot/Rplot02.png?raw=true">
+
+## Attribute Analysis 
+
+I selected alcohol selling option and ambiance as two main attributes to analyze their impacts on Restaurant Proportion/Rating in Old and New Las Vegas. 
+
+### Impacts of Alcohol Attribute 
+
+<img src="https://github.com/Columbia-University-QMSS/final-project-team-vegas/blob/master/plot/att_alcohol_dt.PNG?raw=true">"
+
+<img src="https://github.com/Columbia-University-QMSS/final-project-team-vegas/blob/master/plot/att_alcohol_strp.PNG?raw=true">"
+
+- The Strip region’s restaurants are high-rated if they sell alcohol drinks.
+- Downtown restaurants slightly follow this trend, too, but boozy option is more popular in the Strip.
+
+### Impacts of Ambiance Attribute 
+
+<img src="https://github.com/Columbia-University-QMSS/final-project-team-vegas/blob/master/plot/att_ambiance_dt.PNG?raw=true">
+
+<img src="https://github.com/Columbia-University-QMSS/final-project-team-vegas/blob/master/plot/att_ambiance_strp.PNG?raw=true">
+
+- Overall similar trend of ratings per ambiance, but restaurant customers in the Strip prefers “Classy” and “Upscale” restaurants a bit more.
+- Also, restaurants in the Strip are categorized with more diversified ambiance attributes.
+

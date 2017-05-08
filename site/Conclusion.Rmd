@@ -1,0 +1,41 @@
+---
+title: "Conclusion"
+output:
+   html_document:
+    theme: united
+    highlight: tango
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Implications
+- More spatial clusters of restaurants in New Vegas
+- High-End Restaurants are preferred and exist more in New Vegas
+- Overall sentiment score for two regions are similarly distributed and
+somewhat popular
+- However, consumers in the Strip are more likely to get negative sentiment in
+low rated restaurants
+- Casual restaurants are welcomed in both areas
+- Up-scaled/romantic restaurants are welcomed in both areas
+
+
+## Conclusion
+- Consumers in Old Vegas is more budget-minded than those of New Vegas
+- Consumers in New Vegas are more likely to be the traveler for specific events,
+funs, and traveling
+
+
+## Suggested Next Steps
+For further business analysis of restaurants in Las Vegas, we suggest following steps:
+
+- Include more business attributes for restaurants (e.g. Wi-Fi, attributes, price
+range etc.) to improve consumer preference models 
+- Run regression model to find out why the overall ratings for restaurants in the strip are lower than the restaurants in downton. By running the regression, find the correlaton between rating/price and other business attributes and categories (i.e., cuisines) to figure out statistically significant variables and high correlation across restaurants in Las Vegas. 
+
+

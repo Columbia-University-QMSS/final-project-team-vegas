@@ -1,0 +1,58 @@
+---
+title: "Comparative Analysis of Restaurants in Old and New Las Vegas"
+output:
+   html_document:
+    theme: united
+    highlight: tango
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+## Project
+**The Strip or Downtown? – Comparative Analysis of Restaurants in Old and New Las Vegas**
+<img src="http://www.lasvegas.com/includes/content/images/media/images/LV_Strip_Master_Map.jpg">
+<a href="http://www.lasvegas.com/planning-tools/las-vegas-strip-map/">[The Strip vs Downtown Las Vegas Map]</a>
+
+## Group O Members 
+
+1. Veronica Lee 
+2. Eileen (Yei Rim) Suh
+
+## Background
+
+There are two main districts that travelers to Las Vegas visit: the Downtown or Strip Las Vegas. The Downtown Las Vegas (DTLV) is also often called as Old Las Vegas. As the later name implies, it is the historic center of Las Vegas, Nevada. All the casinos and hotels are relatively close together, mostly in walking distance. They are also less expensive that those in the Strip Las Vegas as it requires less minimum bet for different table games. For this reason, DTLV is “for the budget minded and the serious gambler who do not like all the glitz [and] glamour of the Strip".<a href="#footnote-1">[1]</a>. 
+
+The Las Vegas Strip, on the other hand, features mega resorts that one often sees in television shows or movies. It has “Disney-like attractions and nothing less than 5 star hotels”<a href="#footnote-2">[2]</a> All the famous casino and resorts like the Bellagio, Wynn, Venetian, and Mandalay Bay could be found in the Strip Las Vegas. Thus sightseers or less serious gamblers would prefer to stay on the Strip. 
+
+<p id="footnote-1">[1] "Las Vegas - Downtown Vs The Strip." Singapore Travel Guide. Christopher Allen, Web. 10 Mar. 2017.</p>
+<p id="footnote-2">[2] "Las Vegas: The Strip or Downtown?" Reviews of Hotels, Flights and Vacation Rentals. N.p., n.d. Web. 10 Mar. 2017.</p>
+
+## Abstract 
+
+We are interested in comparing restaurants in these two regions of Old and New Las Vegas. We will use the dataset that Yelp provides on different business and service provided within Las Vegas region. With this dataset, we plan to present our data analysis through different sets of data visualization including the following but not limited to:
+
+1. Geospatial analysis
+ - Layout all restaurants in Las Vegas that are in the Yelp dataset. We would like to see how restaurants are visually distributed in the map.
+ -  Conduct comparative analysis on restaurants in Old and New Las Vegas region. We are interested in how high rated restaurants in two different regions differ in terms of their business attributes/categories.
+ -  Compare and contrast what makes visitors of two regions different. For instance, we are interested in whether people visiting restaurants in Old Las Vegas less concerned about ambience compared to those in New Las Vegas. 
+
+2. Textual/Sentiment analysis 
+
+ - Make word clouds for each star review (from one to five) in two different regions. We are interested in examining whether two different sets of word clouds would look disparate or similar.
+ - Conduct sentiment analysis of high rated restaurants in Old and New Las Vegas region.
+ - Find correlation between high review & certain key words of reviews by neighborhood in Old and New Las Vegas
+
+
+## Research Questions 
+
+Our main research questions for this study include, but no limited to, following questions: 
+
+1. How restaurants are visually distributed in the map in Las Vegas?
+2. How high/low rated restaurants in Old and New Las Vegas differ in terms of their business attributes?
+3. Would the sentiment toward key business attribute(s) differ in two regions, due to different preferences of the traveler/consumer groups in each region?
+

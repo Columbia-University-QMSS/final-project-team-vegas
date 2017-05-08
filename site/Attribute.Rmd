@@ -1,0 +1,31 @@
+---
+title: "Attribute Analysis"
+ html_document:
+    theme: united
+    highlight: tango
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Ratings per Ambiance of Restaurants in Old and New Vegas
+
+Overall, similar trend of ratings per ambiance, but restaurant customers in the Strip prefers “Classy” and “Upscale” restaurants a bit more.
+
+```{r cars}
+summary(cars)
+```
+
+## Ratings per Alcohol attribute of Restaurants in Old and New Vegas
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+The Strip region’s restaurants are high-rated if they sell alcohol drinks
+Downtown restaurants slightly have this trend, too, but boozy option is more popular in the Strip.

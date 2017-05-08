@@ -1,0 +1,89 @@
+---
+title: "Data"
+output:
+   html_document:
+    theme: united
+    highlight: tango
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Data Overview
+
+We used <a href=https://www.yelp.com/dataset_challenge>Yelp’s academic dataset</a>, provided for Yelp Dataset Challenge - Round 9 and <a href="https://www.zillow.com/howto/api/neighborhood-boundaries.htm">Zillow Nevada Neighborhood Boundaries Shape File</a>. 
+
+###Yelp Data Description
+- Geogrphic Coverage: 4 countries (US, UK, Germany, Canada) and 15 cities 
+- Review Data: 4.1 million reviews from 1 million users for 144,000 businesses
+- Business Data: Restaurants, Beauty & Spas, Pet Services, Home Cleaning, etc.
+
+For our project, we are only interested in the restaurant data in Las Vegas in the United States. Thus we use subset data files of this large dataset.
+
+###Business Data Table
+
+The Business dataset includes the geogrphic information of business such as state,neighborhood and coordinates,name of Business (with business ID), categories, star ratings, Review Count, more than 1.1 million business attributes such as hours, parking availability, and ambience, etc. We created a subset which sampled restaurant business of the city of Las Vegas in Nevada, U.S. from *"Business Dataset"* for our comparative analysis. Following Data Table gives a flavor of the business data used for our anlaysis:   
+
+```{r include = FALSE,echo=FALSE}
+setwd("C:/Users/Veronica/Documents/GitHub/QMSS_G4063_final_project_Veronica_Eileen/QMSS_G4063_final_project_Veronica_Eileen/QMSS_G4063_final_project_Veronica_Eileen")
+
+# Importing the data
+restaurants <- read.csv("./data/lv_business_categories_matrix_v2.csv") 
+library(dplyr)
+s_restaurants <- restaurants %>%
+  group_by(neighborhood) %>% 
+  filter(neighborhood %in% c("The Strip", "Downtown")) %>% arrange(neighborhood) 
+
+s_restaurants_subset <- s_restaurants[,c(4,5,11,12,13)]
+```
+
+```{r echo = FALSE}
+library(DT)
+datatable(s_restaurants_subset) 
+
+
+```
+
+
+###Review Data Table 
+Review Data contains Review text, Star ratings (out of 5), business ID, user ID, etc. 
+We create a subset by sampling 10% of review data for restaurants in the city of Las Vegas of Nevada, U.S. from *"Review Dataset"* for our comparative analysis.  
+
+```{r echo=FALSE}
+library(dplyr)
+setwd("C:/Users/Veronica/Documents/GitHub/QMSS_G4063_final_project_Veronica_Eileen/QMSS_G4063_final_project_Veronica_Eileen/QMSS_G4063_final_project_Veronica_Eileen")
+
+review <- read.csv("./data/lv_restaurant_reviews_10.csv") # data 10 samples 
+
+review_summary_bid <- review %>% group_by(neighborhood, business_id, name) %>%
+  filter(neighborhood %in% c("The Strip", "Downtown")) %>%
+  summarise(
+    name_ct = n()
+    , avg_stars = mean(stars) ) %>% arrange(name) 
+
+review_summary <- review %>% group_by(neighborhood, name) %>%
+  filter(neighborhood %in% c("The Strip", "Downtown")) %>%
+  summarise(
+    restaurant_ct = n()
+    , avg_stars = mean(stars) ) %>% arrange(neighborhood) 
+
+# Renaming the columns 
+review_summary2 <- review_summary %>% rename("Restaurant Counts"=restaurant_ct, 
+                                             "Average Rating" = avg_stars,
+                                             "Restaurant Name" = name,
+                                             "Neighborhood" = neighborhood) 
+is.num <- sapply(review_summary2, is.numeric)
+review_summary2[is.num] <- lapply(review_summary2[is.num], round, 2)
+
+
+# Create a data table of count of reviews and avg stars per restaurant in DTLV & The Strip 
+#write.csv(review_summary, file = "review_summary.csv")
+library(DT)
+datatable(review_summary2) %>% DT::formatRound(columns="Average Rating", digits=1)
+```
+
