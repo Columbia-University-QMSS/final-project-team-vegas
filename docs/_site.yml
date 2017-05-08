@@ -3,7 +3,7 @@ navbar:
   title: "My Website"
   left:
     - text: "Home"
-      href: Home.html
+      href: index.html
     - text: "Data"
       href: Data.html
     - text: "Exploratory Analysis"
