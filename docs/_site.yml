@@ -4,7 +4,7 @@ navbar:
   title: "Las Vegas Restaurants"
   left:
     - text: "Home"
-      href: index.html
+      href: Index.html
     - text: "Data"
       href: Data.html
     - text: "Exploratory Analysis"
