@@ -17,4 +17,4 @@ Veronica Lee, Eileen (Yei Rim) Suh
 ### Published website can be viewed at following Github page: 
 
 We published our data visualization and analysis at following Github page: 
-https://vl2354.github.io/LV_FINAL/
+https://vl2354.github.io/LasVegas_Restaurants
