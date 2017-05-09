@@ -16,5 +16,5 @@ Veronica Lee, Eileen (Yei Rim) Suh
 
 ### Published website can be viewed at following Github page: 
 
-Currently we have some technical difficulties seeing the website under this repo that we are building the published github web page fully present our data visualization and analysis. Update on this website is in progress and will be completed promptly. Until then, please use belo github webpage: 
-https://vl2354.github.io/test/
+We published our data visualization and analysis at following Github page: 
+https://vl2354.github.io/LV_FINAL/
