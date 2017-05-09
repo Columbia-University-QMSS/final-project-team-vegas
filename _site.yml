@@ -1,4 +1,5 @@
 name: "Group O-Las Vegas Project"
+output_dir: "."
 navbar:
   title: "Las Vegas Restaurants"
   left:
@@ -18,6 +19,4 @@ navbar:
   html_document:
     theme: united
     highlight: tango
-    include:
-      after_body: footer.html
     css: styles.css
