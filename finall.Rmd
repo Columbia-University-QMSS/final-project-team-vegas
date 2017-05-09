@@ -1,0 +1,280 @@
+---
+title: "Untitled"
+author: "Eileen Suh (ys2595)"
+date: "May 9, 2017"
+output: word_document
+---
+
+```{r}
+# load necceary packages
+packages <- c("topicmodels", "MASS", "RTextTools", "stringr", "ggplot2", "tm", "qdap", "tidytext", 
+              "dplyr", "tidyr", "ggthemes", "knitr")
+pakcages <- lapply(packages, FUN = function(x) {
+  if(!require(x, character.only = TRUE)) {
+    install.packages(x)
+    library(x, character.only = TRUE)
+  }
+})
+
+library(plotly)
+
+setwd("~/Google Drive/017Spring/Data Visualization/project")
+data <- read.csv("final_data.csv")
+
+review <- read.csv('data_r.csv', fileEncoding = "latin1")
+
+# exclude non-ASCII texts
+review$text <- gsub("[^\x20-\x7E]", "", review$text)
+
+# merge attribute data frame and review text file
+total <- merge(data, review, by = "business_id", all = FALSE)
+
+# only keep unique texts (delete duplicated ones)
+total_u <- distinct(total, text, .keep_all = TRUE)
+
+# choose only downtown and The Strip
+total_s <- total_u %>% filter(neighborhood == "Downtown" | neighborhood == "The Strip")
+
+##### clean text #####
+total_s$text <- as.character(total_s$text)
+str(total_s$text)
+text <- as.data.frame(total_s$text)
+
+df_source <- DataframeSource(text[1])
+df_corpus <- VCorpus(df_source)
+df_corpus
+
+# check the contents
+df_corpus[[1]][1]
+df_corpus[[13312]][1]
+
+# Text cleaning
+df_corpus <- tm_map(df_corpus, content_transformer(tolower))
+df_corpus <- tm_map(df_corpus, content_transformer(removeWords), c(stopwords("english")))
+# df_corpus <- tm_map(df_corpus, content_transformer(removeWords), c("list", "w/"))
+df_corpus <- tm_map(df_corpus, content_transformer(removeNumbers))
+df_corpus <- tm_map(df_corpus, content_transformer(removePunctuation))
+# df_corpus <- tm_map(df_corpus, content_transformer(replace_abbreviation))
+# df_corpus <- tm_map(df_corpus, replace_symbol)
+# delete non-english characters
+
+## stem document
+df_corpus_stem <- tm_map(df_corpus, stemDocument)
+df_corpus_stem <- tm_map(df_corpus_stem, stripWhitespace)
+
+# check stemmed document
+df_corpus_stem
+df_corpus_stem[[1]][1]
+df_corpus_stem[[2]][1]
+
+# givr row names to data frame to match neighbhorhood in tdm and dtm
+total_s$row.names <- 1:nrow(total_s)
+
+# dtm and tdm
+tdm <-TermDocumentMatrix(df_corpus_stem)  
+tdm_td <- tidy(tdm)
+tdm_td$neighborhood <- total_s[match(tdm_td[['document']], total_s[['row.names']]), 'neighborhood']
+head(tdm_td)
+
+dtm <- DocumentTermMatrix(df_corpus_stem)
+
+dtm_td <- tidy(dtm)
+head(dtm_td)
+dtm_td$neighborhood <- total_s[match(dtm_td[['document']], total_s[['row.names']]), 'neighborhood']
+head(dtm_td)
+
+
+# The bar graph of frquent words used in review of each neighbor
+# frequent terms in general
+tdm_td %>% group_by(term) %>%
+  summarise(n = sum(count)) %>% 
+  arrange(desc(n)) %>%
+  top_n(n = 20, wt = n)  %>%
+  mutate(term = reorder(term, n)) %>%
+  ggplot(aes(term, n)) +
+  geom_bar(stat = "identity", fill = "skyblue") +
+  xlab(NULL) +  coord_flip() + theme_tufte() +
+  ggtitle("The Words Most Frequently Used in Both Neighborhood") + 
+  theme(plot.title = element_text(lineheight=.8, face="bold")) + 
+  ylab("Term Frequency")
+
+# Bind the TF,DF, and IDF frequency
+# of a tidy text dataset to the dataset
+tf_idf <- tdm_td %>%
+  bind_tf_idf(term, document, count)  %>%
+  arrange(desc(tf_idf))
+
+tf_idf
+
+tf_idf2 <- tdm_td %>%
+  bind_tf_idf(term, document, count)  %>%
+  arrange(desc(tf))
+
+# frequent words by used in reviews of each neighborhood
+### The Strip
+#### by tf
+tf_idf2 %>% filter(neighborhood=="The Strip") %>% 
+  arrange(desc(tf)) %>%
+  top_n(n = 10, wt = tf)  %>%
+  ggplot(aes(x = term, y = tf)) +
+  geom_bar(stat = "identity", fill = "skyblue") + 
+  xlab(NULL) + ylab("Term Frequency") + coord_flip() + theme_tufte() + 
+  ggtitle("Top 10 Frequent Words Used in Reviews of The Strip") + 
+  theme(plot.title = element_text(lineheight=.8, face="bold"))
+
+#### by tf_idf
+tf_idf %>% filter(neighborhood=="The Strip") %>% 
+  top_n(n = 10, wt = tf_idf)  %>%
+  ggplot(aes(x = reorder(term, tf_idf), y = tf_idf)) +
+  geom_bar(stat = "identity", fill = "skyblue") + 
+  xlab(NULL) + ylab("TF-IDF") + coord_flip() + theme_tufte() + 
+  ggtitle("The Frequent Words Used in The Strip") + 
+  theme(plot.title = element_text(lineheight=.8, face="bold"))
+
+
+### Downtown
+#### by tf
+tf_idf2 %>% filter(neighborhood=="Downtown") %>% 
+  #arrange(desc(tf)) %>%
+  top_n(n = 10, wt = tf)  %>%
+  ggplot(aes(x = term, y = tf)) +
+  geom_bar(stat = "identity", fill = "skyblue") + 
+  xlab(NULL) + ylab("Term Frequency") + coord_flip() + theme_tufte() + 
+  ggtitle("Top 10 Frequent Words Used in Reviews of Downtown") + 
+  theme(plot.title = element_text(lineheight=.8, face="bold"))
+
+#### by tf_idf
+tf_idf %>% filter(neighborhood=="Downtown") %>% 
+  arrange(desc(tf_idf)) %>%
+  top_n(n = 10, wt = tf_idf)  %>%
+  ggplot(aes(x = reorder(term, tf_idf), y = tf_idf)) +
+  geom_bar(stat = "identity", fill = "skyblue") + 
+  xlab(NULL) + ylab("TF-IDF") + coord_flip() + theme_tufte() + 
+  ggtitle("The Frequent Words Used in Downtown") + 
+  theme(plot.title = element_text(lineheight=.8, face="bold"))
+
+# comparison
+plot <- tf_idf %>%
+  group_by(neighborhood) %>%
+  top_n(n = 10, wt = tf_idf) %>%
+  mutate(key = 1:10)
+plot %>% ggplot() +
+  geom_bar(aes(x = term))
+  
+####################### wordcloud #######################    
+
+# wordcloud by neighborhood
+library(wordcloud)
+# Create purple_orange
+purple_orange <- brewer.pal(10, "PuOr")
+# Drop 2 faintest colors
+purple_orange <- purple_orange[-(1:2)]
+
+## The Strip
+term_frequency_s <- tf_idf %>% filter(neighborhood=="The Strip")
+set.seed(100)
+
+# Create a wordcloud for the review in The Strip
+wordcloud(term_frequency_s$term, term_frequency_s$tf, 
+          max.words = 200, 
+          colors= purple_orange)
+
+### includes words "overpriced"
+
+## Downtown
+term_frequency_DT <- tf_idf %>% filter(neighborhood=="Downtown")
+set.seed(213)
+
+# Create a wordcloud for the review in Downtown
+wordcloud(term_frequency_DT$term, term_frequency_DT$tf, 
+          max.words = 100, colors = purple_orange)
+
+#### includes the world "cheap"
+
+
+########### Sentiment #############
+setwd("~/Google Drive/017Spring/Data Visualization/hw3")
+pos <- read.table("positive-words.txt", as.is=T)
+neg <- read.table("negative-words.txt", as.is=T)
+
+library(quanteda)
+
+setwd("~/Google Drive/017Spring/Data Visualization/project")
+sentiment <- function(words=c("really great good stuff bad")){
+  require(quanteda)
+  tok <- quanteda::tokenize(words)
+  pos.count <- sum(tok[[1]]%in%pos[,1])
+  neg.count <- sum(tok[[1]]%in%neg[,1])
+  out <- (pos.count - neg.count)/(pos.count+neg.count)
+  return(out)
+}
+
+Strip <- total_s %>% filter(neighborhood == "The Strip")
+Downtown <- total_s %>% filter(neighborhood == "Downtown")
+
+Sent_s <- data.frame(matrix(0, ncol = 1, nrow = nrow(Strip)))
+colnames(Sent_s)[1] <- "sent"
+Sent_s$text <- Strip$text
+Sent_s$star <- Strip$stars
+
+Sent_d <- data.frame(matrix(0, ncol = 1, nrow = nrow(Downtown)))
+Sent_d$text <- Downtown$text
+colnames(Sent_d)[1] <- "sent"
+Sent_d$star <- Downtown$stars
+
+for(i in 1:nrow(Strip)) {
+  Sent_s[[i, 1]] <- sentiment(Strip[[i, 495]])
+}
+
+for(i in 1:nrow(Downtown)) {
+  Sent_d[[i,1]] <- sentiment(Downtown[[i, 495]])
+}
+
+sentiment(Strip[[7, 495]])
+sentiment(Downtown$text)
+
+Sent_d$neigh <- "Downtown"
+Sent_d$neigh <- factor(Sent_d$neigh)
+Sent_s$neigh <- "The Strip"
+Sent_s$neigh <- factor(Sent_s$neigh)
+
+Neighborhood <- rbind(Sent_d, Sent_s)
+library(plyr)
+
+Neighborhood$rate <- "low"
+
+Neighborhood$rate <- ifelse(Neighborhood$star < 2.5, "low", 
+        ifelse(Neighborhood$star < 4,  "mid",  "high"))
+table(Neighborhood$rate)
+Neighborhood$rate <- factor(Neighborhood$rate, levels = c('low', 'mid', 'high'))
+str(Neighborhood$rate)
+
+library(plyr)
+table(Neighborhood$neigh)
+names(Neighborhood)[4] <- "neigh"
+
+p <- ggplot(Neighborhood, aes(x = neigh, y = sent, fill = neigh)) + geom_boxplot()
+p <- p + scale_x_discrete(name = "") +
+  scale_y_continuous(name = "Sentiment Score") + 
+  ggtitle("Sentiment Score of Reviews in Each Neighbhorhood") +
+  labs(fill = "Neighbhoorhood") + coord_flip() +
+  theme_tufte() 
+  #theme(axis.text.y=element_blank())
+
+ggplotly(p)
+
+labels <- c(high = "High [4, 5]", mid = "Mid [2.5, 3.5]", low = "Low [1, 2]")
+
+p2 <- ggplot(Neighborhood, aes(x = neigh, y = sent, fill = neigh)) + geom_boxplot() + 
+  theme_tufte() +
+  #theme(axis.text.x=element_blank()) + 
+  labs(fill = "Neighbhoorhood") + 
+  scale_x_discrete(name = "") +
+  scale_y_continuous(name = "Sentiment Score") +
+  ggtitle("Sentiment Score of Reviews of Each Neighbhorhood by Rating")
+
+p2 <- p2  + facet_wrap(~rate, labeller=labeller(rate = labels))
+
+ggplotly(p2)
+
+```
