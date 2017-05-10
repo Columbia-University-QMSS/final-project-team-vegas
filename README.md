@@ -57,4 +57,3 @@ Project Organization
     │
     └── Project Proposal   <- Initial project proposal 
     
-    --------
