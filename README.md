@@ -55,7 +55,7 @@ Project Organization
     │
     ├── Presentation Slide <- A PDF file used for class presentation
     │   
-    ├── Project Book       <- A file accounts for project process for this project A PDF file used for class presentation
+    ├── Process Book       <- A PDF file accounts for project process 
     │
     └── Project Proposal   <- Initial project proposal 
     
