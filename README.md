@@ -1,4 +1,4 @@
-# Group O - Data Visualization Final Project 
+﻿# Group O - Data Visualization Final Project 
 Las Vegas: The Strip or Downtown? – Comparative Analysis of Restaurants in Old and New Las Vegas
 ==============================
 Veronica Lee, Eileen (Yei Rim) Suh
@@ -44,14 +44,12 @@ Project Organization
     │   └── raw_subset     <- Some of subsets of processed data used for data analysis.
     │       └──shape       <- The original Zillow and Census government shape files used for Map Analysis.
     │
-    ├── docs               <- R Marked Down scripts used for published HTML files generation, generated HTML files 
+    ├── docs               <- R Marked Down scripts and HTML files used for HTML website generation 
+    │   └── site_libs      <- CSS, Json and HTML style related files genrated for HTML publish via R Markdown files knitting
     │
-    ├── plot               <- All (static) plots generated from R codes from data analysis and visualization
-    │
-    ├── site_libs          <- CSS, Json and HTML style related files genrated for HTML publish via R Markdown files knitting
-    │
-    ├── reports            <- Generated analysis as HTML, PDF, LaTeX, etc.
-    │   └── figures        <- Generated graphics and figures to be used in reporting
+    ├── src                <- Codebook including all sources and scripts used for this project.
+    │   ├── data           <- R and Python scripts used for data collection, wrangling, cleaning and creating a subset.
+    │   └── rmd		   <- R Markdown Files used to render published webpage 
     │
     ├── Presentation Slide <- A PDF file used for class presentation
     │   

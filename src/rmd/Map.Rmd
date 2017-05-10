@@ -1,0 +1,168 @@
+---
+title: "Las Vegas Map - Restaurant Distribution"
+output:
+   html_document:
+    theme: united
+    highlight: tango
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Clustering Restaurants in Las Vegas
+
+This map shows a city of Las Vegas by neighborhood level in grey shades and presents spatial restaurant clusterings in each neighborhood. Two selected neighborhoods for this project, the Strip and Downtown are particularly highlighted in Red. By clicking each neighborhood, user can view Neighborhood's name. Also, user can zoom in or out each neighborhood's restaurant clustering to view detailed individual restaurant information with name, rating and price range. Once user complete zooming in restaurant clustering points to each restaurant point level, user can view detailed restaurant information expalined above by clicking on it.  
+
+```{r include=FALSE, echo=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+#library(devtools)
+#devtools::install_github("rstudio/leaflet")
+
+# Get Nevada's map coordinates
+library(maps)
+require(sp)
+library(leaflet)
+#  Load a vector map of Clark boroughs
+#Las Vegas is the city located within Clark County of the state of Nevada. 
+#LV (city) - Clark (county) - NV (state)
+
+library(rgdal)
+
+setwd("C:/Users/Veronica/Desktop/Spring 2017/Data Visualization 4063/final")
+#load Nevada County Level Shape File  
+NV_z <- readOGR("./shape/ZillowNeighborhoods-NV","ZillowNeighborhoods-NV", verbose = FALSE) #Ziller Neighoborhoods Data of Nevada
+
+#Subset a Las Vegas map by neighborhood-level from above
+LV_z <- subset(NV_z, NV_z$City %in% c("Las Vegas"))   
+#Subset a Vegas map by neighborhood-level from above
+two_z <- subset(LV_z, LV_z$Name %in% c("The Strip", "Downtown"))
+two_z@data$r_count <- ifelse(two_z@data$Name == "The Strip", 818, 340) 
+two_z@data$avg_rating <- ifelse(two_z@data$Name == "The Strip", '3.32/5.00', '3.65/5.00') 
+
+# Load Las Vegas Business Data Frame
+lv_b <- readr::read_csv("C:/Users/Veronica/Desktop/Spring 2017/Data Visualization 4063/final/LV_bis.csv")
+
+# Add restaurant scatter as circles on a map 
+# Set Palette
+library(RColorBrewer)
+pal = colorFactor("RdYlGn", domain = lv_b$stars)
+color_rating <- pal(lv_b$stars)
+
+#price <- lv_b[!(lv_b$price=="-"),]
+#pal = colorFactor("RdYlGn", domain = price$price)
+pal = colorFactor("RdYlGn", domain = lv_b$price)
+color_price <- pal(lv_b$price)
+
+```
+
+```{r echo=FALSE}
+# Clustering restaurants in a LV map 
+m <- leaflet(lv_b) %>% setView(-115.14,36.16,10) %>% addTiles() %>%
+   addCircleMarkers(data = lv_b, lng = ~longitude, lat = ~latitude, color=color_rating,
+                        popup = paste("<b>Neighborhood:</b>",lv_b$neighborhood, "<br/>",
+                                      "<b>Name:</b>",lv_b$name, "<br/>",
+                                      "<b>Rating:</b>",lv_b$stars,"<br/>",
+                                      "<b>Price:</b>",lv_b$price_range,"<br/>"),
+                          clusterOptions = markerClusterOptions())  
+
+# Add neighborhood polygons on a LV map with clustering of restaurants 
+
+m <- m %>% 
+  addPolygons(data = LV_z, color = "#444444", weight = 1, smoothFactor = 0.5,
+              opacity = 1.0, fillOpacity = 0.5,
+              popup = paste("<b>Neighborhood:</b>",LV_z$Name, "<br/>"),
+              highlightOptions = highlightOptions(color = "white", weight = 2,
+                                                  bringToFront = F)) %>%
+  addPolygons(data = two_z, color = "#c41200", weight = 1, smoothFactor = 1,
+              opacity = 1, fillOpacity = 0.3,   
+              popup = paste("<b>Neighborhood:</b>",two_z$Name, "<br/>",
+                            "<b>Restaurant Count:</b>",two_z$r_count,"<br/>",
+                            "<b>Avg. Rating:</b>",two_z$avg_rating,"<br/>"),
+              highlightOptions = highlightOptions(color = "white", weight = 2,
+                                                  bringToFront = FALSE)) 
+
+# Locate me button
+m <- m %>%
+  addEasyButton(easyButton(
+    icon="fa‐globe", title="Zoom to Entire World Map",
+    onClick=JS("function(btn, map){ map.setZoom(1.5); }"))) %>%
+  addEasyButton(easyButton(
+    icon="fa‐crosshairs", title="Locate Me",
+    onClick=JS("function(btn, map){ map.locate({setView: true}); }")))
+
+# Add legend to the map 
+m <- m %>% addLegend("bottomright",
+            pal = colorFactor("RdYlGn", domain = lv_b$stars), values = ~lv_b$stars,
+            title = "Restaurant Rate<br>in Las Vegas", opacity = 0.5)
+
+
+m
+```
+
+## Restaurant Distribution in Las Vegas by Price and Rating Level 
+
+This map shows a spatial distribution of restaurants in Las Vegas by Price and Rating level.
+
+- Downtown: Average price range is 1.6 out of 4.0. Average rating is 3.7 out of 5.0. 
+- The Strip: Average price rang is 2.2 out of 4.0. Average rating is 3.3 out of 5.0. 
+
+Aforementioned trend is accounted by color distribution of restaurants in this map. 
+
+```{r echo=FALSE}
+# base map 
+m2 <- leaflet(LV_z) %>% setView(-115.14,36.16,10) %>% addTiles() %>%
+  addPolygons(data = LV_z, color = "#444444", weight = 1, smoothFactor = 0.5,
+              opacity = 1.0, fillOpacity = 0.5,
+              popup = paste("<b>Neighborhood:</b>",LV_z$Name, "<br/>"),
+              highlightOptions = highlightOptions(color = "white", weight = 2,
+                                                  bringToFront = F)) %>%
+  addPolygons(data = two_z, color = "#c41200", weight = 1, smoothFactor = 1,
+              opacity = 1, fillOpacity = 0.3,   
+              popup = paste("<b>Neighborhood:</b>",two_z$Name, "<br/>",
+                            "<b>Restaurant Count:</b>",two_z$r_count,"<br/>",
+                            "<b>Avg. Rating:</b>",two_z$avg_rating,"<br/>"),
+              highlightOptions = highlightOptions(color = "white", weight = 2,
+                                                  bringToFront = FALSE)) 
+# add locate me button
+
+m2 <- m2 %>% 
+  addEasyButton(easyButton(
+    icon="fa‐globe", title="Zoom to Entire World Map",
+    onClick=JS("function(btn, map){ map.setZoom(1.5); }"))) %>%
+  addEasyButton(easyButton(
+    icon="fa‐crosshairs", title="Locate Me",
+    onClick=JS("function(btn, map){ map.locate({setView: true}); }")))
+
+#Add Business Attribute Layers
+
+m2 <- m2 %>%  # First Data Layer: Rating
+  addCircles(group="Rating",data = lv_b, lng = ~longitude, lat = ~latitude, col = color_rating, 
+                 popup = paste("<b>Neighborhood:</b>",lv_b$neighborhood, "<br/>",
+                               "<b>Name:</b>",lv_b$name, "<br/>",
+                               "<b>Rating:</b>",lv_b$stars,"<br/>",
+                               "<b>Price:</b>",lv_b$price_range,"<br/>")) %>%  
+  addCircles(group="Price",data = lv_b, lng = ~longitude, lat = ~latitude, col = color_price, 
+                 popup = paste("<b>Neighborhood:</b>",lv_b$neighborhood, "<br/>",
+                               "<b>Name:</b>",lv_b$name, "<br/>",
+                               "<b>Rating:</b>",lv_b$stars,"<br/>",
+                               "<b>Price:</b>",lv_b$price_range,"<br/>")) %>%         
+  # Layers control
+  addLayersControl(
+    baseGroups = c("OpenStreetMap"),
+    overlayGroups = c("Rating","Price"),
+    options = layersControlOptions(collapsed = TRUE) ) %>% 
+    addLegend("bottomright",
+            pal = colorNumeric("RdYlGn", domain = lv_b$stars), values = ~lv_b$stars,
+            title = "Rate Range<br>in Las Vegas", opacity = 0.5) %>% 
+    addLegend("bottomright",
+            pal = colorFactor("RdYlGn", domain = lv_b$price), values = ~lv_b$price,
+            title = "Price Range<br>in Las Vegas", opacity = 0.5)  
+
+m2
+```  
+

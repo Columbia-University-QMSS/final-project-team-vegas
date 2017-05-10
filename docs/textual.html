@@ -11,7 +11,7 @@
 
 
 
-<title>Comparative Analysis of Restaurants in Old and New Las Vegas</title>
+<title>Textual/Sentiment Analysis</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -294,61 +294,30 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Comparative Analysis of Restaurants in Old and New Las Vegas</h1>
+<h1 class="title toc-ignore">Textual/Sentiment Analysis</h1>
 
 </div>
 
 
-<div id="project" class="section level2">
-<h2>Project</h2>
-<p><strong>The Strip or Downtown? Comparative Analysis of Restaurants in Old and New Las Vegas</strong> <img src="http://www.lasvegas.com/includes/content/images/media/images/LV_Strip_Master_Map.jpg"> <a href="http://www.lasvegas.com/planning-tools/las-vegas-strip-map/">[The Strip vs Downtown Las Vegas Map]</a></p>
+<div id="text-analysis-on-review-data" class="section level2">
+<h2>Text Analysis on Review Data</h2>
+<p><img src="https://github.com/Columbia-University-QMSS/final-project-team-vegas/blob/master/plot/tfidf_strp.png?raw=true"> <img src="https://github.com/Columbia-University-QMSS/final-project-team-vegas/blob/master/plot/tfdif_dt.PNG?raw=true"></p>
+<p>We computed the TF-IDF score for each region for Text analysis.</p>
 </div>
-<div id="group-o-members" class="section level2">
-<h2>Group O Members</h2>
-<ol style="list-style-type: decimal">
-<li>Veronica Lee</li>
-<li>Eileen (Yei Rim) Suh</li>
-</ol>
-</div>
-<div id="background" class="section level2">
-<h2>Background</h2>
-<p>There are two main districts that travelers to Las Vegas visit: the Downtown or Strip Las Vegas. The Downtown Las Vegas (DTLV) is also often called as Old Las Vegas. As the later name implies, it is the historic center of Las Vegas, Nevada. All the casinos and hotels are relatively close together, mostly in walking distance. They are also less expensive that those in the Strip Las Vegas as it requires less minimum bet for different table games. For this reason, DTLV is “for the budget minded and the serious gambler who do not like all the glitz [and] glamour of the Strip”.<a href="#footnote-1">[1]</a>.</p>
-<p>The Las Vegas Strip, on the other hand, features mega resorts that one often sees in television shows or movies. It has “Disney-like attractions and nothing less than 5 star hotels”<a href="#footnote-2">[2]</a> All the famous casino and resorts like the Bellagio, Wynn, Venetian, and Mandalay Bay could be found in the Strip Las Vegas. Thus sightseers or less serious gamblers would prefer to stay on the Strip.</p>
-<p id="footnote-1">
-[1] “Las Vegas - Downtown Vs The Strip.” Singapore Travel Guide. Christopher Allen, Web. 10 Mar. 2017.
-</p>
-<p id="footnote-2">
-[2] “Las Vegas: The Strip or Downtown?” Reviews of Hotels, Flights and Vacation Rentals. N.p., n.d. Web. 10 Mar. 2017.
-</p>
-</div>
-<div id="abstract" class="section level2">
-<h2>Abstract</h2>
-<p>We are interested in comparing restaurants in these two regions of Old and New Las Vegas. We will use the dataset that Yelp provides on different business and service provided within Las Vegas region. With this dataset, we plan to present our data analysis through different sets of data visualization including the following but not limited to:</p>
-<ol style="list-style-type: decimal">
-<li>Geospatial analysis</li>
-</ol>
+<div id="word-clouds" class="section level2">
+<h2>Word Clouds</h2>
 <ul>
-<li>Layout all restaurants in Las Vegas that are in the Yelp dataset. We would like to see how restaurants are visually distributed in the map.</li>
-<li>Conduct comparative analysis on restaurants in Old and New Las Vegas region. We are interested in how high rated restaurants in two different regions differ in terms of their business attributes/categories.</li>
-<li>Compare and contrast what makes visitors of two regions different. For instance, we are interested in whether people visiting restaurants in Old Las Vegas less concerned about ambience compared to those in New Las Vegas.</li>
-</ul>
-<ol start="2" style="list-style-type: decimal">
-<li>Textual/Sentiment analysis</li>
-</ol>
-<ul>
-<li>Make word clouds for each star review (from one to five) in two different regions. We are interested in examining whether two different sets of word clouds would look disparate or similar.</li>
-<li>Conduct sentiment analysis of high rated restaurants in Old and New Las Vegas region.</li>
-<li>Find correlation between high review &amp; certain key words of reviews by neighborhood in Old and New Las Vegas</li>
+<li><p>Downtown <img src="https://github.com/Columbia-University-QMSS/final-project-team-vegas/blob/master/plot/Rplot-dt-wc.png?raw=true"></p></li>
+<li><p>The Strip <img src="https://github.com/Columbia-University-QMSS/final-project-team-vegas/blob/master/plot/Rplot01-strp-wc.png?raw=true"></p></li>
 </ul>
 </div>
-<div id="research-questions" class="section level2">
-<h2>Research Questions</h2>
-<p>Our main research questions for this study include, but no limited to, following questions:</p>
-<ol style="list-style-type: decimal">
-<li>How restaurants are visually distributed in the map in Las Vegas?</li>
-<li>How high/low rated restaurants in Old and New Las Vegas differ in terms of their business attributes?</li>
-<li>Would the sentiment toward key business attribute(s) differ in two regions, due to different preferences of the traveler/consumer groups in each region?</li>
-</ol>
+<div id="sentiment-analysis" class="section level2">
+<h2>Sentiment Analysis</h2>
+<p><img src="https://github.com/Columbia-University-QMSS/final-project-team-vegas/blob/master/plot/sentiment_score.PNG?raw=true"> <img src="https://github.com/Columbia-University-QMSS/final-project-team-vegas/blob/master/plot/sentiment_rating.PNG?raw=true"></p>
+<ul>
+<li>Overall sentiment of Downtown consumers are more postively skewed than that of consumers in the Strip.</li>
+<li>We can see this overall sentiment distribution gap in Downtown and the Strip is due to more negative sentiment towards low-rated restaurants across the consumer groups in the Strip.</li>
+</ul>
 </div>
 
 
