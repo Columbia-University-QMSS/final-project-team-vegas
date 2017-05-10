@@ -3,18 +3,60 @@ Las Vegas: The Strip or Downtown? – Comparative Analysis of Restaurants in Old
 ==============================
 Veronica Lee, Eileen (Yei Rim) Suh
 
+### Published website can be viewed at following Github page: 
+
+We published our data visualization and analysis at following Github page: 
+https://vl2354.github.io/LasVegas_Restaurants
 
 ## Steps:
 
 ### Processing data:
 - Download Yelp dataset from: https://www.yelp.com/dataset_challenge
 - Download Zillow Nevada Shapefile dataset from: https://www.zillow.com/howto/api/neighborhood-boundaries.htm
-- Create a data folder containing four empty folders named external, interim, processed and raw under the local repo
-- Unzip Yelp dataset and put .json files into data/raw folder
+- Download Census Tract level Cartographic Boundary Shapefiles from the U.S. Census Bureau from :https://www.census.gov/geo/maps-data/data/tiger-cart-boundary.html
+- Create a data folder containing two folders named processed and raw_subset under the local repo
+- Unzip Yelp dataset to get raw dataset in .json files in local direcotry 
 - Run src/data/process_raw_data.py
-- We post a final subset of data in this final submission repo 
 
-### Published website can be viewed at following Github page: 
+For businesses data set:
+- Run src/data/process_business_data.R
+- Run src/data/b_categories.R
 
-We published our data visualization and analysis at following Github page: 
-https://vl2354.github.io/LasVegas_Restaurants
+For reviews data set:
+- Run src/data/subset_reviews.py
+- Run src/data/clean_review_data.R
+- Run src/data/summarise_review.R
+
+Once we processed our data into raw_subset in .csv or .xls files, we used dplyr and plyr to wrangle data into the best structure for our further analysis. 
+
+### Data Analysis:
+- Run src/attribute_unnest.R for unnest categories and attributes in nested .ujson format in Business data subset
+- Run src/eda_progress.R for data wrangling/cleaning/creating a subset used for exploratory data analysis
+- Run src/map_progress.R for spatial data wrangling and cleaning for geo-spatial analysis 
+- Run src/text_progress.R for spatial data wrangling and cleaning for geo-spatial analysis 
+
+Project Organization
+------------
+
+    ├── README.md          <- The top-level README for developers using this project.
+    ├── data
+    │   ├── processed      <- Some of final canonical data subsets for analysis and modeling.
+    │   └── raw_subset     <- Some of subsets of processed data used for data analysis.
+    │       └──shape       <- The original Zillow and Census government shape files used for Map Analysis.
+    │
+    ├── docs               <- R Marked Down scripts used for published HTML files generation, generated HTML files 
+    │
+    ├── plot               <- All (static) plots generated from R codes from data analysis and visualization
+    │
+    ├── site_libs          <- CSS, Json and HTML style related files genrated for HTML publish via R Markdown files knitting
+    │
+    ├── reports            <- Generated analysis as HTML, PDF, LaTeX, etc.
+    │   └── figures        <- Generated graphics and figures to be used in reporting
+    │
+    ├── Presentation Slide <- A PDF file used for class presentation
+    │   
+    ├── Project Book       <- A file accounts for project process for this project A PDF file used for class presentation
+    │
+    └── Project Proposal   <- Initial project proposal 
+    
+    --------
